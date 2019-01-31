@@ -1,0 +1,17 @@
+# Cada vez que usemos Docker necesitaremos permisos de super usuario
+sudo: required
+
+# Aqui indicamos a Travis CI que necesitaremos Docker preinstalado.
+services:
+  - docker
+
+# Con esta sentencia indicamos que se ejecuten una serie de pasos
+# antes de que se lancen nuestros tests.
+before_install:
+  # Construimos nuestra imagen Docker con la etiqueta johndoe/docker-react
+  - docker build -t johndoe/docker-react -f Dockerfile.dev .
+
+# En esta sección introduciremos los comandos que necesitaremos para ejecutar
+# nuestra bateria de tests.
+script:
+  - docker run johndoe/docker-react npm run test -- --coverage
