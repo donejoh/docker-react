@@ -1,7 +1,7 @@
 # Cada vez que usemos Docker necesitaremos permisos de super usuario
 sudo: required
 
-# Aqui indicamos a Travis CI que necesitaremos Docker preinstalado.
+# Aquí indicamos a Travis CI que necesitaremos Docker preinstalado.
 services:
   - docker
 
@@ -12,6 +12,29 @@ before_install:
   - docker build -t johndoe/docker-react -f Dockerfile.dev .
 
 # En esta sección introduciremos los comandos que necesitaremos para ejecutar
-# nuestra bateria de tests.
+# nuestra batería de tests.
 script:
   - docker run johndoe/docker-react npm run test -- --coverage
+
+# En esta sección vamos a indicar la configuración de Travis CI para que
+# pueda desplegar nuestra aplicación en AWS
+deploy:
+  # Proveedor sobre el que realizaremos el despliegue.
+  provider: elasticbeanstalk
+  # Region en la que hemos creado nuestra instancia de Elastic Beanstalk.
+  region: "us-east-2"
+  # Nombre de nuestra aplicación en Elastic Beanstalk
+  app: "docker-react"
+  # Nombre del entorno bajo el que hemos creado nuestra aplicación en
+  # Elastic Beanstalk
+  env: "DockerReact-env"
+  # Nombre del Bucket de nuestra aplicación.
+  bucket_name: "elasticbeanstalk-us-east-2-127616801389"
+  # Nombre de la carpeta de nuestro proyecto dentro del Bucket
+  bucket_path: "docker-react"
+  # Cada vez que haya un cambio en esta rama (master) se hara el despliegue
+  on:
+    branch: master
+  acces_key_id: "$AWS_ACCESS_KEY"
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"
