@@ -35,6 +35,6 @@ deploy:
   # Cada vez que haya un cambio en esta rama (master) se hara el despliegue
   on:
     branch: master
-  acces_key_id: "$AWS_ACCESS_KEY"
+  access_key_id: "$AWS_ACCESS_KEY"
   secret_access_key:
     secure: "$AWS_SECRET_KEY"
